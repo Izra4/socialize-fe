@@ -5,6 +5,7 @@ import LandingPage from './LandingPage.jsx'
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import Register from "./Register.jsx";
 import Login from "./Login.jsx"
+import Profile from "./Profile.jsx"
 
 const router = createBrowserRouter([
     {
@@ -18,6 +19,10 @@ const router = createBrowserRouter([
     {
         path: "/register",
         element: <Register/>
+    },
+    {
+        path: "/profile",
+        element: <Profile/>
     }
 ])
 

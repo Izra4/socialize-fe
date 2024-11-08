@@ -17,7 +17,7 @@ export const Register = () => {
 
     return (
         <>
-            <div className="w-screen h-screen relative overflow-hidden font-montserrat flex flex-row">
+            <div className="w-screen h-screen relative overflow-hidden flex flex-row font-montserrat">
                 <div className="bg-amber-500 h-screen w-4/5 flex items-center justify-center relative">
                     <img src={bg} alt="background" className="object-contain z-0" />
                     <div className="absolute w-full h-full bg-black opacity-75 z-0"></div>
