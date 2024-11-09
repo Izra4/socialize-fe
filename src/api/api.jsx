@@ -1,0 +1,1 @@
+export const API_BASE_URL = 'https://21bc-36-71-39-218.ngrok-free.app';

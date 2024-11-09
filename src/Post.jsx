@@ -13,10 +13,10 @@ export const Post = () => {
 
     const { getRootProps, getInputProps } = useDropzone({
         accept: "image/*,video/*",
-        maxFiles: 1, // Restrict to one file
+        maxFiles: 1,
         onDrop: (acceptedFiles) => {
             if (acceptedFiles.length > 0) {
-                setUploadedFile(acceptedFiles[0]); // Save the first file
+                setUploadedFile(acceptedFiles[0]);
             }
         },
     });
@@ -34,8 +34,8 @@ export const Post = () => {
     };
 
     const handleCancel = () => {
-        setText(""); // Clear text in the editor
-        setUploadedFile(null); // Clear uploaded file
+        setText("");
+        setUploadedFile(null);
     };
 
     const openPreview = () => {
@@ -47,7 +47,7 @@ export const Post = () => {
     };
 
     const deleteFile = () => {
-        setUploadedFile(null); // Clear the uploaded file
+        setUploadedFile(null);
     };
 
     const renderPreview = () => {

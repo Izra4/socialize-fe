@@ -34,6 +34,19 @@ export const Login = () => {
                 credentials: 'include',
             });
 
+            // Debug: Print all response headers
+            console.log('Response Headers:');
+            response.headers.forEach((value, key) => {
+                console.log(`${key}: ${value}`);
+            });
+
+            // Specifically check for authorization or token headers
+            const authHeader = response.headers.get('authorization');
+            const tokenHeader = response.headers.get('x-auth-token'); // atau header lain yang mungkin digunakan
+
+            if (authHeader) console.log('Authorization Header:', authHeader);
+            if (tokenHeader) console.log('Token Header:', tokenHeader);
+
             const data = await response.json();
 
             if (response.ok) {
@@ -43,6 +56,7 @@ export const Login = () => {
             }
         } catch (err) {
             setError('Network error. Please try again later.');
+            console.error('Login Error:', err);
         } finally {
             setLoading(false);
         }

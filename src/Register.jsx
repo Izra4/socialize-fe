@@ -1,11 +1,21 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom'; // Import Link from react-router-dom for navigation
+import { Link, useNavigate } from 'react-router-dom';
+import { API_BASE_URL } from './api/api.jsx';
 import bg from './assets/bg-reg.png';
 import vec1 from './assets/vector-reg.png';
 
 export const Register = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        password: '',
+        confirm_password: ''
+    });
+    const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
@@ -13,6 +23,42 @@ export const Register = () => {
 
     const toggleConfirmPasswordVisibility = () => {
         setShowConfirmPassword(!showConfirmPassword);
+    };
+
+    const handleChange = (e) => {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value
+        });
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setError('');
+        setLoading(true);
+
+        try {
+            const response = await fetch(`${API_BASE_URL}/auth/register`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+                credentials: 'include',
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                navigate('/login'); // Redirect to login after successful registration
+            } else {
+                setError(data.message || 'Registration failed. Please try again.');
+            }
+        } catch (err) {
+            setError('Network error. Please try again later.');
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -33,21 +79,35 @@ export const Register = () => {
                         <h1 className="text-3xl font-bold mb-2 mt-4">Hi there!</h1>
                         <div className="w-full h-0.5 bg-gray-200 mb-6"></div>
 
-                        <form className="flex flex-col space-y-4">
+                        {error && (
+                            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
+                                {error}
+                            </div>
+                        )}
+
+                        <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
                             <div>
                                 <p>Name</p>
                                 <input
                                     type="text"
+                                    name="name"
                                     placeholder="Name"
+                                    value={formData.name}
+                                    onChange={handleChange}
                                     className="p-3 rounded-xl bg-white text-black focus:outline-none w-full"
+                                    required
                                 />
                             </div>
                             <div>
                                 <p>Email</p>
                                 <input
                                     type="email"
+                                    name="email"
                                     placeholder="Email"
+                                    value={formData.email}
+                                    onChange={handleChange}
                                     className="p-3 rounded-xl bg-white text-black focus:outline-none w-full"
+                                    required
                                 />
                             </div>
                             <div>
@@ -55,8 +115,12 @@ export const Register = () => {
                                 <div className="relative">
                                     <input
                                         type={showPassword ? "text" : "password"}
+                                        name="password"
                                         placeholder="Password"
+                                        value={formData.password}
+                                        onChange={handleChange}
                                         className="p-3 rounded-xl bg-white text-black focus:outline-none w-full"
+                                        required
                                     />
                                     <button
                                         type="button"
@@ -72,8 +136,12 @@ export const Register = () => {
                                 <div className="relative">
                                     <input
                                         type={showConfirmPassword ? "text" : "password"}
+                                        name="confirm_password"
                                         placeholder="Password Confirmation"
+                                        value={formData.confirm_password}
+                                        onChange={handleChange}
                                         className="p-3 rounded-xl bg-white text-black focus:outline-none w-full"
+                                        required
                                     />
                                     <button
                                         type="button"
@@ -88,15 +156,17 @@ export const Register = () => {
                             <div className="flex justify-center">
                                 <button
                                     type="submit"
-                                    className="bg-white w-1/2 text-primary_blue p-3 rounded-xl font-semibold hover:bg-opacity-90 mt-5 mb-4"
+                                    disabled={loading}
+                                    className={`bg-white w-1/2 text-primary_blue p-3 rounded-xl font-semibold hover:bg-opacity-90 mt-5 mb-4 ${
+                                        loading ? 'opacity-50 cursor-not-allowed' : ''
+                                    }`}
                                 >
-                                    Register
+                                    {loading ? 'Registering...' : 'Register'}
                                 </button>
                             </div>
                         </form>
                     </div>
 
-                    {/* Login Link Outside of the Blue Div */}
                     <div className="text-center mt-4">
                         <p className="text-gray-600">Already have an account?</p>
                         <Link to="/login" className="text-primary_blue underline">
