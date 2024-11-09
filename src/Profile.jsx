@@ -10,7 +10,7 @@ export const Profile = () => {
                 <Header />
                 <div className="flex flex-row">
                     <Navbar />
-                    <div className="w-full mt-20">
+                    <div className="w-full mt-20 ml-64 h-[680px]">
                         <img src={vec} alt="vector" className="absolute bottom-0 right-0" />
 
                         <div className="w-[1200px] h-5/6 ml-8 mt-8 relative">
@@ -60,7 +60,7 @@ export const Profile = () => {
                                 </div>
                             </div>
                             <button
-                                className="bg-red-500 text-white py-2 px-4 rounded-3xl font-semibold absolute bottom-0 right-0 mr-10 mb-2"
+                                className="bg-red-500 text-white py-2 px-4 rounded-3xl font-semibold absolute bottom-0 right-0 mr-28 mb-4"
                             >
                                 Log out
                             </button>

@@ -1,13 +1,37 @@
+import React, { useState, useEffect, useRef } from 'react';
 import logo from '../assets/logo.png';
-import { AiOutlineSearch } from "react-icons/ai";
+import { AiOutlineSearch, AiFillSetting, AiOutlineLogout } from "react-icons/ai";
+import { Link } from "react-router-dom";
 
 const Header = () => {
+    const [showDropdown, setShowDropdown] = useState(false);
+    const dropdownRef = useRef(null); // Reference for the dropdown
+
+    const handleProfileClick = () => {
+        setShowDropdown(!showDropdown);
+    };
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setShowDropdown(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [dropdownRef]);
+
     return (
-        <div className="absolute z-10 bg-white w-full flex flex-col items-center">
+        <div className="fixed z-10 bg-white w-full flex flex-col items-center">
             <div className="flex items-center justify-center py-4 px-4 w-full h-20">
                 <div className="flex items-center space-x-3 mr-4">
-                    <img src={logo} alt="Logo" className="w-12 h-12" />
-                    <span className="text-3xl font-bold bg-gradient-to-r from-primary_blue to-secondary_blue bg-clip-text text-transparent">Socialize</span>
+                    <Link to="/dashboard">
+                        <img src={logo} alt="Logo" className="w-12 h-12" />
+                    </Link>
+                    <Link to="/dashboard" className="text-3xl font-bold bg-gradient-to-r from-primary_blue to-secondary_blue bg-clip-text text-transparent">Socialize</Link>
                 </div>
 
                 <div className="flex-grow flex justify-center">
@@ -28,17 +52,38 @@ const Header = () => {
                         Post
                     </button>
 
-                    <div
-                        className="w-12 h-12 p-[2px] rounded-full bg-gradient-to-b from-primary_blue to-secondary_blue overflow-hidden">
-                        <div className="w-full h-full rounded-full bg-gray-300 overflow-hidden">
-                            <img
-                                src={logo}
-                                alt="Profile"
-                                className="w-full h-full object-cover"
-                            />
+                    <div className="relative" ref={dropdownRef}>
+                        <div
+                            onClick={handleProfileClick}
+                            className="w-12 h-12 p-[2px] rounded-full bg-gradient-to-b from-primary_blue to-secondary_blue overflow-hidden cursor-pointer"
+                        >
+                            <div className="w-full h-full rounded-full bg-gray-300 overflow-hidden">
+                                <img
+                                    src={logo}
+                                    alt="Profile"
+                                    className="w-full h-full object-cover"
+                                />
+                            </div>
                         </div>
-                    </div>
 
+                        {/* Dropdown Menu */}
+                        {showDropdown && (
+                            <div className="absolute right-0 mt-2 w-32 bg-primary_blue font-semibold text-white rounded-lg shadow-lg">
+                                <Link
+                                    to="/profile"
+                                    className="flex items-center px-4 py-2 hover:bg-blue-400 rounded-t-lg"
+                                >
+                                    <AiFillSetting className="mr-2" /> Settings
+                                </Link>
+                                <Link
+                                    to="/logout"
+                                    className="flex items-center px-4 py-2 hover:bg-blue-400 rounded-b-lg"
+                                >
+                                    <AiOutlineLogout className="mr-2" /> Log out
+                                </Link>
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
 
