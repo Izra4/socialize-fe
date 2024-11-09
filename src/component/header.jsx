@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import logo from '../assets/logo.png';
 import { AiOutlineSearch, AiFillSetting, AiOutlineLogout } from "react-icons/ai";
-import { Link } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
 const Header = () => {
     const [showDropdown, setShowDropdown] = useState(false);
@@ -10,6 +10,7 @@ const Header = () => {
     const handleProfileClick = () => {
         setShowDropdown(!showDropdown);
     };
+    const navigate = useNavigate();
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -48,7 +49,7 @@ const Header = () => {
                 </div>
 
                 <div className="flex items-center space-x-4 ml-4">
-                    <button className="px-8 py-2 rounded-full text-white font-semibold" style={{ backgroundColor: "#498AFF" }}>
+                    <button onClick={() => { navigate("/post") }} className="px-8 py-2 rounded-full text-white font-semibold" style={{ backgroundColor: "#498AFF" }}>
                         Post
                     </button>
 
@@ -76,7 +77,7 @@ const Header = () => {
                                     <AiFillSetting className="mr-2" /> Settings
                                 </Link>
                                 <Link
-                                    to="/logout"
+                                    to="/login"
                                     className="flex items-center px-4 py-2 hover:bg-blue-400 rounded-b-lg"
                                 >
                                     <AiOutlineLogout className="mr-2" /> Log out

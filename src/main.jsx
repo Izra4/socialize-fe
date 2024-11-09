@@ -7,6 +7,7 @@ import Register from "./Register.jsx";
 import Login from "./Login.jsx"
 import Profile from "./Profile.jsx"
 import Dashboard from "./Dashboard.jsx";
+import Post from "./Post.jsx";
 
 const router = createBrowserRouter([
     {
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
     {
         path: "/dashboard",
         element: <Dashboard/>
+    },
+    {
+        path: "/post",
+        element: <Post/>
     }
 ])
 
