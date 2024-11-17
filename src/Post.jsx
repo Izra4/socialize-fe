@@ -79,7 +79,15 @@ export const Post = () => {
                     <div className="w-2/3 max-h-screen mt-20 px-10 pt-5 ml-64 relative">
                         <div>
                             <p className="text-3xl font-bold mb-3">Create Your Post!</p>
-
+                            <p className={'text-2xl font-semibold'}>Title</p>
+                            <input
+                                type="text"
+                                placeholder="Title"
+                                value={''}
+                                // onChange={(e) => setEmail(e.target.value)}
+                                className="p-3 rounded-xl bg-white text-black focus:outline-none w-2/4 border-2 my-4"
+                                required
+                            />
                             {/* Text Editor */}
                             <div className="mb-16">
                                 <ReactQuill
@@ -98,7 +106,8 @@ export const Post = () => {
                             >
                                 <input {...getInputProps()} />
                                 <p className="text-gray-500">Drag & Drop or upload media</p>
-                                <IoCloudUploadSharp className="text-4xl text-gray-500 flex items-center justify-center" />
+                                <IoCloudUploadSharp
+                                    className="text-4xl text-gray-500 flex items-center justify-center"/>
                             </div>
                             <p className="mb-8 text-xs mt-1 text-red-600">*Only 1 file supported</p>
 

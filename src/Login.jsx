@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import {useEffect, useState} from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import bg from './assets/bg-reg.png';
 import vec1 from './assets/vector-login.png';
-import {API_BASE_URL} from "./api/api.jsx";
+import { API_BASE_URL } from './api/api.jsx';
+import Cookies from 'js-cookie';
 
 export const Login = () => {
     const [showPassword, setShowPassword] = useState(false);
@@ -11,6 +12,13 @@ export const Login = () => {
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const token = Cookies.get('token');
+        if (token) {
+            navigate('/dashboard');
+        }
+    }, [navigate]);
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
@@ -37,6 +45,13 @@ export const Login = () => {
             const data = await response.json();
 
             if (response.ok) {
+                Cookies.set('token', "jwt-token="+data.obj, {
+                    expires: 7,
+                    secure: false,
+                    sameSite: 'Lax',
+                    path: '/',
+                });
+                console.log(Cookies.get('token'))
                 navigate('/dashboard');
             } else {
                 setError(data.message || 'Login failed. Please try again.');
@@ -88,7 +103,7 @@ export const Login = () => {
                                 <p>Password</p>
                                 <div className="relative">
                                     <input
-                                        type={showPassword ? "text" : "password"}
+                                        type={showPassword ? 'text' : 'password'}
                                         placeholder="Password"
                                         value={password}
                                         onChange={(e) => setPassword(e.target.value)}
@@ -100,7 +115,7 @@ export const Login = () => {
                                         onClick={togglePasswordVisibility}
                                         className="absolute inset-y-0 right-3 text-black focus:outline-none"
                                     >
-                                        {showPassword ? "Hide" : "Show"}
+                                        {showPassword ? 'Hide' : 'Show'}
                                     </button>
                                 </div>
                             </div>

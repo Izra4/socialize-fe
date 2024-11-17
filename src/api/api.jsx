@@ -1,1 +1,1 @@
-export const API_BASE_URL = 'https://21bc-36-71-39-218.ngrok-free.app';
+export const API_BASE_URL = 'http://socialize-api.cupcakez.my.id';

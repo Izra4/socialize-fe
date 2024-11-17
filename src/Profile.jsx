@@ -5,6 +5,7 @@ import vec from "./assets/vec-prof.png";
 import pict from "./assets/background.png";
 import { useNavigate } from "react-router-dom";
 import { API_BASE_URL } from './api/api';
+import Cookies from "js-cookie";
 
 export const Profile = () => {
     const navigate = useNavigate();
@@ -25,7 +26,7 @@ export const Profile = () => {
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    credentials: 'include'
+                    credentials: 'include',
                 });
 
                 if (response.ok) {
@@ -36,7 +37,7 @@ export const Profile = () => {
                         photo: data.obj.photo.Valid ? data.obj.photo.String : null
                     });
                 } else if (response.status === 401) {
-                    // If unauthorized, redirect to login
+                    console.log(("Kontol: "+Cookies.get('token')))
                     navigate('/login');
                 } else {
                     setError('Failed to fetch user data');
@@ -52,23 +53,8 @@ export const Profile = () => {
     }, [navigate]);
 
     const handleLogout = async () => {
-        try {
-            const response = await fetch(`${API_BASE_URL}/auth/logout`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                credentials: 'include' // Ensures cookies are included in the request
-            });
-
-            if (response.ok) {
-                navigate('/login');
-            } else {
-                setError('Logout failed. Please try again.');
-            }
-        } catch (err) {
-            setError('Network error during logout. Please try again.');
-        }
+        Cookies.remove('token');
+        navigate('/login');
     };
 
     if (loading) {

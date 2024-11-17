@@ -9,6 +9,7 @@ import Profile from "./Profile.jsx"
 import Dashboard from "./Dashboard.jsx";
 import Post from "./Post.jsx";
 import ProfileUpdate from "./ProfileUpdate.jsx";
+import ProtectedRoute from "./component/protected.jsx";
 
 const router = createBrowserRouter([
     {
@@ -33,7 +34,11 @@ const router = createBrowserRouter([
     },
     {
         path: "/dashboard",
-        element: <Dashboard/>
+        element: (
+             <ProtectedRoute>
+                <Dashboard/>
+             </ProtectedRoute>
+        )
     },
     {
         path: "/post",

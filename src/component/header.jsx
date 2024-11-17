@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import logo from '../assets/logo.png';
 import { AiOutlineSearch, AiFillSetting, AiOutlineLogout } from "react-icons/ai";
 import {Link, useNavigate} from "react-router-dom";
+import Cookies from "js-cookie";
 
 const Header = () => {
     const [showDropdown, setShowDropdown] = useState(false);
@@ -11,6 +12,11 @@ const Header = () => {
         setShowDropdown(!showDropdown);
     };
     const navigate = useNavigate();
+
+    const handleLogout = () => {
+        Cookies.remove('token');
+        navigate('/login');
+    };
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -69,19 +75,20 @@ const Header = () => {
 
                         {/* Dropdown Menu */}
                         {showDropdown && (
-                            <div className="absolute right-0 mt-2 w-32 bg-primary_blue font-semibold text-white rounded-lg shadow-lg">
+                            <div
+                                className="absolute right-0 mt-2 w-32 bg-primary_blue font-semibold text-white rounded-lg shadow-lg">
                                 <Link
                                     to="/profile"
                                     className="flex items-center px-4 py-2 hover:bg-blue-400 rounded-t-lg"
                                 >
-                                    <AiFillSetting className="mr-2" /> Settings
+                                    <AiFillSetting className="mr-2"/> Settings
                                 </Link>
-                                <Link
-                                    to="/login"
-                                    className="flex items-center px-4 py-2 hover:bg-blue-400 rounded-b-lg"
+                                <button
+                                    onClick={handleLogout}
+                                    className="flex items-center px-4 py-2 w-full text-left hover:bg-blue-400 rounded-b-lg"
                                 >
-                                    <AiOutlineLogout className="mr-2" /> Log out
-                                </Link>
+                                    <AiOutlineLogout className="mr-2"/> Log out
+                                </button>
                             </div>
                         )}
                     </div>
