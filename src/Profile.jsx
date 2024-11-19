@@ -25,6 +25,7 @@ export const Profile = () => {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
+            "Authorization": `Bearer ${Cookies.get("jwt-token")}`,
           },
           credentials: "include",
         });
@@ -37,7 +38,6 @@ export const Profile = () => {
             photo: data.obj.photo.Valid ? data.obj.photo.String : null,
           });
         } else if (response.status === 401) {
-          console.log(Cookies.get("jwt-token"));
           navigate("/login");
         } else {
           setError("Failed to fetch user data");

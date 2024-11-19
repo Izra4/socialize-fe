@@ -3,7 +3,6 @@ import Header from "./component/header.jsx";
 import Navbar from "./component/navbar.jsx";
 import Post from "./component/post.jsx";
 import {API_BASE_URL} from "./api/api.jsx";
-import Cookies from "js-cookie";
 
 export const Dashboard = () => {
   const [posts, setPosts] = useState([]);
