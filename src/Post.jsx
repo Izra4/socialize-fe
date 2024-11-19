@@ -6,6 +6,7 @@ import Header from "./component/header.jsx";
 import Navbar from "./component/navbar.jsx";
 import { IoCloudUploadSharp } from "react-icons/io5";
 import { API_BASE_URL } from "./api/api";
+import Cookies from "js-cookie";
 
 export const Post = () => {
   const [title, setTitle] = useState("");
@@ -59,6 +60,9 @@ export const Post = () => {
           method: "POST",
           body: formData,
           credentials: "include",
+          headers: {
+            "Authorization": `Bearer ${Cookies.get("jwt-token")}`,
+          }
         });
 
         if (response.ok) {
@@ -81,6 +85,7 @@ export const Post = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${Cookies.get("jwt-token")}`,
         },
         body: JSON.stringify({
           title: title,
