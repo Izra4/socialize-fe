@@ -37,7 +37,7 @@ export const Profile = () => {
             photo: data.obj.photo.Valid ? data.obj.photo.String : null,
           });
         } else if (response.status === 401) {
-          console.log("hi: " + Cookies.get("jwt-token"));
+          console.log(Cookies.get("jwt-token"));
           navigate("/login");
         } else {
           setError("Failed to fetch user data");
