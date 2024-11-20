@@ -68,9 +68,8 @@ export const ProfileUpdate = () => {
         const data = await response.json();
         setUserData({
           name: data.obj.name,
-          email: data.obj.email,
         });
-        setError("");
+        setError(""); 
       } else {
         const data = await response.json();
         setError(data.message || "Failed to update user data.");
