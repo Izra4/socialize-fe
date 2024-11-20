@@ -7,6 +7,8 @@ import {
 } from "react-icons/ai";
 import { Link, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
+import pict from "../assets/background.png";
+import {API_BASE_URL} from "../api/api.jsx";
 
 const Header = () => {
   const [showDropdown, setShowDropdown] = useState(false);
@@ -16,6 +18,40 @@ const Header = () => {
     setShowDropdown(!showDropdown);
   };
   const navigate = useNavigate();
+
+  const [userData, setUserData] = useState({
+    photo: "",
+  });
+
+  const fetchUserData = async () => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/auth/current-user`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${Cookies.get("jwt-token")}`,
+        },
+        credentials: "include",
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setUserData({
+          photo: data.obj.photo,
+        });
+      }else if(response.status === 401){
+        Cookies.remove("jwt-token");
+        navigate("/login");
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserData();
+  }, [navigate]);
+
 
   const handleLogout = () => {
     Cookies.remove("jwt-token");
@@ -81,7 +117,7 @@ const Header = () => {
             >
               <div className="w-full h-full rounded-full bg-gray-300 overflow-hidden">
                 <img
-                  src={logo}
+                    src={userData.photo && userData.photo !== "" ? userData.photo : pict}
                   alt="Profile"
                   className="w-full h-full object-cover"
                 />
