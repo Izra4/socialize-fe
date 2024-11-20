@@ -14,6 +14,8 @@ export const ProfileUpdate = () => {
   const [error, setError] = useState("");
   const [newName, setNewName] = useState("");
   const [newEmail, setNewEmail] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+
 
   // Fetch user data
   useEffect(() => {
@@ -60,7 +62,8 @@ export const ProfileUpdate = () => {
         },
         body: JSON.stringify({
           name: newName,
-          email: newEmail, // Include email if needed
+          email: newEmail,
+          password: newPassword,
         }),
       });
 
@@ -133,6 +136,22 @@ export const ProfileUpdate = () => {
                           placeholder="Enter your email"
                           value={newEmail} // Bind to newEmail state
                           onChange={(e) => setNewEmail(e.target.value)} // Handle changes
+                      />
+                    </div>
+                    <div>
+                      <label
+                          className="text-primary_blue font-semibold block mb-1"
+                          htmlFor="password"
+                      >
+                        Password
+                      </label>
+                      <input
+                          type="text"
+                          id="password"
+                          className="w-full px-4 py-2 rounded-lg bg-gray-200 text-gray-700"
+                          placeholder="Enter your password"
+                          value={newPassword}
+                          onChange={(e) => setNewPassword(e.target.value)} // Handle changes
                       />
                     </div>
                   </div>

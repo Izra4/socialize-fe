@@ -206,9 +206,6 @@ export const Profile = () => {
                         <div className="text-red-500 text-sm mt-2">{error}</div>
                     )}
                     <div className="self-end text-white font-semibold text-sm mt-3 space-x-2">
-                      <button className="bg-primary_blue py-2 px-4 rounded-3xl">
-                        Edit Password
-                      </button>
                       <button
                           className="bg-primary_blue py-2 px-4 rounded-3xl"
                           onClick={() => navigate("/profile/update")}
