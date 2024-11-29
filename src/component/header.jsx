@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import logo from "../assets/logo.png";
 import {
   AiOutlineSearch,
@@ -8,15 +8,12 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import pict from "../assets/background.png";
-import {API_BASE_URL} from "../api/api.jsx";
+import { API_BASE_URL } from "../api/api.jsx";
 
-const Header = () => {
+const Header = ({ setSearchResults }) => {
   const [showDropdown, setShowDropdown] = useState(false);
-  const dropdownRef = useRef(null); // Reference for the dropdown
-
-  const handleProfileClick = () => {
-    setShowDropdown(!showDropdown);
-  };
+  const [keyword, setKeyword] = useState("");
+  const dropdownRef = useRef(null);
   const navigate = useNavigate();
 
   const [userData, setUserData] = useState({
@@ -39,7 +36,7 @@ const Header = () => {
         setUserData({
           photo: data.obj.photo,
         });
-      }else if(response.status === 401){
+      } else if (response.status === 401) {
         Cookies.remove("jwt-token");
         navigate("/login");
       }
@@ -52,10 +49,35 @@ const Header = () => {
     fetchUserData();
   }, [navigate]);
 
-
   const handleLogout = () => {
     Cookies.remove("jwt-token");
     navigate("/login");
+  };
+
+  const handleSearch = async () => {
+    setKeyword("");
+    try {
+      const response = await fetch(`${API_BASE_URL}/post?keyword=${keyword}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${Cookies.get("jwt-token")}`,
+        }
+      });
+      const data = await response.json();
+      if (data.status === 200) {
+        setSearchResults(data.obj); // Update search results in parent component
+      } else if (data.status === 401) {
+        Cookies.remove("jwt-token");
+        navigate("/login");
+      }
+    } catch (error) {
+      console.error("Error searching posts:", error);
+    }
+  };
+
+  const handleSearchClick = () => {
+    handleSearch(); 
   };
 
   useEffect(() => {
@@ -90,10 +112,16 @@ const Header = () => {
           <form className="w-full max-w-lg relative">
             <input
               type="search"
+              value={keyword}
+              onChange={(e) => setKeyword(e.target.value)}
               placeholder="Search something"
               className="w-full p-2 pl-10 rounded-full bg-gray-200 text-gray-700 placeholder-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-300"
             />
-            <button className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">
+            <button
+              type="button"
+              onClick={handleSearchClick} 
+              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500"
+            >
               <AiOutlineSearch size={18} />
             </button>
           </form>
@@ -112,19 +140,18 @@ const Header = () => {
 
           <div className="relative" ref={dropdownRef}>
             <div
-              onClick={handleProfileClick}
+              onClick={() => setShowDropdown(!showDropdown)}
               className="w-12 h-12 p-[2px] rounded-full bg-gradient-to-b from-primary_blue to-secondary_blue overflow-hidden cursor-pointer"
             >
               <div className="w-full h-full rounded-full bg-gray-300 overflow-hidden">
                 <img
-                    src={userData.photo && userData.photo !== "" ? userData.photo : pict}
+                  src={userData.photo && userData.photo !== "" ? userData.photo : pict}
                   alt="Profile"
                   className="w-full h-full object-cover"
                 />
               </div>
             </div>
 
-            {/* Dropdown Menu */}
             {showDropdown && (
               <div className="absolute right-0 mt-2 w-32 bg-primary_blue font-semibold text-white rounded-lg shadow-lg">
                 <Link
@@ -144,7 +171,6 @@ const Header = () => {
           </div>
         </div>
       </div>
-
       <div className="w-full h-1 bg-blue-400"></div>
     </div>
   );

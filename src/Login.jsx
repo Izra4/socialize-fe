@@ -56,7 +56,7 @@ export const Login = () => {
         setError(data.message || "Login failed. Please try again.");
       }
     } catch (err) {
-      setError("Network error. Please try again later.");
+      setError("error: ",err);
     } finally {
       setLoading(false);
     }
@@ -97,7 +97,7 @@ export const Login = () => {
               <div>
                 <p>Email</p>
                 <input
-                  type="text"
+                  type="email"
                   placeholder="Email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
