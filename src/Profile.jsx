@@ -45,7 +45,7 @@ export const Profile = () => {
         setError("Failed to fetch user data");
       }
     } catch (err) {
-      setError("Network error. Please try again later.");
+      setError("Network error. Please try again later. error: ",err);
     } finally {
       setLoading(false);
     }
@@ -110,7 +110,7 @@ export const Profile = () => {
         setError("Failed to update profile photo.");
       }
     } catch (err) {
-      setError("An error occurred while uploading the file.");
+      setError("An error occurred while uploading the file. err: ",err);
     }
   };
 

@@ -10,6 +10,7 @@ import Dashboard from "./Dashboard.jsx";
 import Post from "./Post.jsx";
 import ProfileUpdate from "./ProfileUpdate.jsx";
 import ProtectedRoute from "./component/protected.jsx";
+import PostDetail from "./PostDetail.jsx";
 
 const router = createBrowserRouter([
   {
@@ -43,6 +44,10 @@ const router = createBrowserRouter([
   {
     path: "/post",
     element: <Post />,
+  },
+  {
+    path: "/post/:id",
+    element: <PostDetail />,
   },
 ]);
 

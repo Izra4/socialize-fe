@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom"; // Import Link to enable navigation
 import { useState, useEffect } from "react";
 import Header from "./component/header.jsx";
 import Navbar from "./component/navbar.jsx";
@@ -67,18 +68,29 @@ export const Dashboard = () => {
               <p>No posts available</p>
             ) : (
               renderPosts.map((post) => (
-                <Post
-                  key={post.id}
-                  id={post.id}
-                  profile={post.user_photo}
-                  username={post.user_name}
-                  time={new Date(post.created_at).toLocaleString()}
-                  title={post.title}
-                  text={post.content}
-                  image={post.image}
-                  likes={post.up_vote}
-                  comments={0}
-                />
+                <div key={post.id} className="post-item mb-6">
+                  <Link to={`/post/${post.id}`}>
+                    <Post
+                      key={post.id}
+                      id={post.id}
+                      profile={post.user_photo}
+                      username={post.user_name}
+                      time={new Date(post.created_at).toLocaleString()}
+                      title={post.title}
+                      text={post.content}
+                      image={post.image}
+                      likes={post.up_vote}
+                      comments={0}
+                    />
+                  </Link>
+
+                  <Link to={`/post/${post.id}`} className="text-blue-500">
+                    <button className="flex items-center mt-2">
+                      <i className="fas fa-comment"></i>
+                      <span className="ml-2">View Comments</span>
+                    </button>
+                  </Link>
+                </div>
               ))
             )}
           </div>
