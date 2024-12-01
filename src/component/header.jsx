@@ -28,7 +28,6 @@ const Header = ({ setSearchResults }) => {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${Cookies.get("jwt-token")}`,
         },
-        credentials: "include",
       });
 
       if (response.ok) {

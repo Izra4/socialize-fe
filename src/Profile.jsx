@@ -29,7 +29,6 @@ export const Profile = () => {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${Cookies.get("jwt-token")}`,
         },
-        credentials: "include",
       });
 
       if (response.ok) {

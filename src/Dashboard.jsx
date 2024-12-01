@@ -83,13 +83,6 @@ export const Dashboard = () => {
                       comments={0}
                     />
                   </Link>
-
-                  <Link to={`/post/${post.id}`} className="text-blue-500">
-                    <button className="flex items-center mt-2">
-                      <i className="fas fa-comment"></i>
-                      <span className="ml-2">View Comments</span>
-                    </button>
-                  </Link>
                 </div>
               ))
             )}
