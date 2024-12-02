@@ -1,6 +1,6 @@
 services:
   web:
-    container_name: socialize-web
+    container_name: socialize-web-vulnerable
     build: .
     ports:
       - "3000:3000"
