@@ -96,7 +96,7 @@ export const Login = () => {
               <div>
                 <p>Email</p>
                 <input
-                  type="email"
+                  type="text"
                   placeholder="Email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
