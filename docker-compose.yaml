@@ -1,6 +1,6 @@
 services:
   web:
-    container_name: socialize-web
+    container_name: socialize-web-secure
     build: .
     ports:
       - "3001:3001"
