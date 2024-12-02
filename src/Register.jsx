@@ -37,6 +37,18 @@ export const Register = () => {
     setError("");
     setLoading(true);
 
+    if (formData.password.length < 8) {
+      setError("Password must be at least 8 characters long.");
+      setLoading(false);
+      return;
+    }
+
+    if (formData.password !== formData.confirm_password) {
+      setError("Passwords do not match.");
+      setLoading(false);
+      return;
+    }
+
     try {
       const response = await fetch(`${API_BASE_URL}/auth/register`, {
         method: "POST",
@@ -54,7 +66,7 @@ export const Register = () => {
         setError(data.message || "Registration failed. Please try again.");
       }
     } catch (err) {
-      setError("Network error. Please try again later.");
+      setError("Network error. Please try again later.", err);
     } finally {
       setLoading(false);
     }
@@ -103,7 +115,7 @@ export const Register = () => {
               <div>
                 <p>Email</p>
                 <input
-                  type="text"
+                  type="email"
                   name="email"
                   placeholder="Email"
                   value={formData.email}
