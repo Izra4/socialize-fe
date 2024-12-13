@@ -15,6 +15,7 @@ export const Register = () => {
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPasswordRequirements, setShowPasswordRequirements] = useState(false);
   const navigate = useNavigate();
 
   const togglePasswordVisibility = () => {
@@ -32,13 +33,27 @@ export const Register = () => {
     });
   };
 
+  const passwordValidation = {
+    minLength: formData.password.length >= 8,
+    hasUpperCase: /[A-Z]/.test(formData.password),
+    hasLowerCase: /[a-z]/.test(formData.password),
+    hasNumber: /\d/.test(formData.password),
+    hasSpecialChar: /[!@#$%^&*(),.?":{}|<>]/.test(formData.password),
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     setLoading(true);
 
-    if (formData.password.length < 8) {
-      setError("Password must be at least 8 characters long.");
+    if (
+      !passwordValidation.minLength ||
+      !passwordValidation.hasUpperCase ||
+      !passwordValidation.hasLowerCase ||
+      !passwordValidation.hasNumber ||
+      !passwordValidation.hasSpecialChar
+    ) {
+      setError("Password does not meet the required criteria.");
       setLoading(false);
       return;
     }
@@ -66,7 +81,7 @@ export const Register = () => {
         setError(data.message || "Registration failed. Please try again.");
       }
     } catch (err) {
-      setError("Network error. Please try again later.", err);
+      setError("Network error. Please try again later.");
     } finally {
       setLoading(false);
     }
@@ -135,6 +150,8 @@ export const Register = () => {
                     onChange={handleChange}
                     className="p-3 rounded-xl bg-white text-black focus:outline-none w-full"
                     required
+                    onFocus={() => setShowPasswordRequirements(true)}
+                    onBlur={() => setShowPasswordRequirements(false)}
                   />
                   <button
                     type="button"
@@ -144,6 +161,56 @@ export const Register = () => {
                     {showPassword ? "Hide" : "Show"}
                   </button>
                 </div>
+
+                {showPasswordRequirements && (
+                  <ul className="mt-2 text-sm">
+                    <li
+                      className={
+                        passwordValidation.minLength
+                          ? "text-green-500"
+                          : "text-red-500"
+                      }
+                    >
+                      At least 8 characters
+                    </li>
+                    <li
+                      className={
+                        passwordValidation.hasUpperCase
+                          ? "text-green-500"
+                          : "text-red-500"
+                      }
+                    >
+                      At least one uppercase letter
+                    </li>
+                    <li
+                      className={
+                        passwordValidation.hasLowerCase
+                          ? "text-green-500"
+                          : "text-red-500"
+                      }
+                    >
+                      At least one lowercase letter
+                    </li>
+                    <li
+                      className={
+                        passwordValidation.hasNumber
+                          ? "text-green-500"
+                          : "text-red-500"
+                      }
+                    >
+                      At least one number
+                    </li>
+                    <li
+                      className={
+                        passwordValidation.hasSpecialChar
+                          ? "text-green-500"
+                          : "text-red-500"
+                      }
+                    >
+                      At least one special character
+                    </li>
+                  </ul>
+                )}
               </div>
               <div>
                 <p>Password Confirmation</p>
