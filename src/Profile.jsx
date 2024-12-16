@@ -19,7 +19,6 @@ export const Profile = () => {
   const [file, setFile] = useState(null);
   const [fileName, setFileName] = useState("");
 
-  // Fetch user data
   const fetchUserData = useCallback(async () => {
     try {
       setLoading(true);
