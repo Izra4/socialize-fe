@@ -50,7 +50,7 @@ const PostDetail = () => {
   }, [id]);
 
   const handleCancel = () => {
-    setComment(""); // Clear the comment input
+    setComment("");
   };
 
   const handlePostComment = async () => {
