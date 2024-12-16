@@ -44,7 +44,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           passphrase: ${{ secrets.PASSPHRASE }}
           source: "./"
-          target: "devsecops/fe/socialize-fe-secure"
+          target: "./devsecops/fe/socialize-fe-secure"
 
       # 🐳 Step 7: SSH into the server and run Docker commands
       - name: 🐳 Run Docker Compose commands on remote server

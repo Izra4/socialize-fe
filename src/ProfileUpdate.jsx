@@ -16,7 +16,6 @@ export const ProfileUpdate = () => {
   const [newEmail, setNewEmail] = useState("");
   const [newPassword, setNewPassword] = useState("");
 
-  // Fetch user data
   useEffect(() => {
     const fetchUserData = async () => {
       try {
