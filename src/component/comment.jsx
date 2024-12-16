@@ -20,7 +20,6 @@ const Comment = ({ pict, name, commentText }) => {
   );
 };
 
-// Define prop types for the component
 Comment.propTypes = {
   pict: PropTypes.string.isRequired, // pict is expected to be a string and required
   name: PropTypes.string.isRequired, // name is expected to be a string and required
