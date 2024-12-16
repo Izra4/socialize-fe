@@ -48,7 +48,6 @@ export const ProfileUpdate = () => {
     fetchUserData();
   }, []);
 
-  // Handle updating the user's name and email
   const handleUpdate = async () => {
     try {
       const response = await fetch(`${API_BASE_URL}/auth/update-data`, {
