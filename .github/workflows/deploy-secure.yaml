@@ -37,7 +37,7 @@ jobs:
 
       # 📤 Step 6: Copy files to remote server
       - name: 📤 Copy files to remote server
-        uses: appleboy/scp-action@v0.1.5
+        uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.REMOTE_HOST }}
           username: ${{ secrets.REMOTE_USER }}
@@ -49,7 +49,7 @@ jobs:
 
       # 🐳 Step 7: SSH into the server and run Docker commands
       - name: 🐳 Run Docker Compose commands on remote server
-        uses: appleboy/ssh-action@v0.1.5
+        uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.REMOTE_HOST }}
           username: ${{ secrets.REMOTE_USER }}
