@@ -45,6 +45,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: "."
           target: "./devsecops/fe/socialize-fe-secure"
+          debug: true
 
       # 🐳 Step 7: SSH into the server and run Docker commands
       - name: 🐳 Run Docker Compose commands on remote server
