@@ -1,4 +1,5 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
+import PropTypes from "prop-types";
 import logo from "../assets/logo.png";
 import {
   AiOutlineSearch,
@@ -20,13 +21,13 @@ const Header = ({ setSearchResults }) => {
     photo: "",
   });
 
-  const fetchUserData = async () => {
+  const fetchUserData = useCallback(async () => {
     try {
       const response = await fetch(`${API_BASE_URL}/auth/current-user`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${Cookies.get("jwt-token")}`,
+          Authorization: `Bearer ${Cookies.get("jwt-token")}`,
         },
       });
 
@@ -42,11 +43,11 @@ const Header = ({ setSearchResults }) => {
     } catch (err) {
       console.log(err);
     }
-  };
+  }, [navigate]);
 
   useEffect(() => {
     fetchUserData();
-  }, [navigate]);
+  }, [fetchUserData]);
 
   const handleLogout = () => {
     Cookies.remove("jwt-token");
@@ -60,8 +61,8 @@ const Header = ({ setSearchResults }) => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${Cookies.get("jwt-token")}`,
-        }
+          Authorization: `Bearer ${Cookies.get("jwt-token")}`,
+        },
       });
       const data = await response.json();
       if (data.status === 200) {
@@ -76,7 +77,7 @@ const Header = ({ setSearchResults }) => {
   };
 
   const handleSearchClick = () => {
-    handleSearch(); 
+    handleSearch();
   };
 
   useEffect(() => {
@@ -118,7 +119,7 @@ const Header = ({ setSearchResults }) => {
             />
             <button
               type="button"
-              onClick={handleSearchClick} 
+              onClick={handleSearchClick}
               className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500"
             >
               <AiOutlineSearch size={18} />
@@ -144,7 +145,11 @@ const Header = ({ setSearchResults }) => {
             >
               <div className="w-full h-full rounded-full bg-gray-300 overflow-hidden">
                 <img
-                  src={userData.photo && userData.photo !== "" ? userData.photo : pict}
+                  src={
+                    userData.photo && userData.photo !== ""
+                      ? userData.photo
+                      : pict
+                  }
                   alt="Profile"
                   className="w-full h-full object-cover"
                 />
@@ -173,6 +178,10 @@ const Header = ({ setSearchResults }) => {
       <div className="w-full h-1 bg-blue-400"></div>
     </div>
   );
+};
+
+Header.propTypes = {
+  setSearchResults: PropTypes.func.isRequired,
 };
 
 export default Header;

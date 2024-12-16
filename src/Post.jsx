@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { useDropzone } from "react-dropzone";
@@ -61,8 +61,8 @@ export const Post = () => {
           body: formData,
           credentials: "include",
           headers: {
-            "Authorization": `Bearer ${Cookies.get("jwt-token")}`,
-          }
+            Authorization: `Bearer ${Cookies.get("jwt-token")}`,
+          },
         });
 
         if (response.ok) {
@@ -85,7 +85,7 @@ export const Post = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${Cookies.get("jwt-token")}`,
+          Authorization: `Bearer ${Cookies.get("jwt-token")}`,
         },
         body: JSON.stringify({
           title: title,

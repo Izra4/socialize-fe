@@ -15,7 +15,8 @@ export const Register = () => {
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [showPasswordRequirements, setShowPasswordRequirements] = useState(false);
+  const [showPasswordRequirements, setShowPasswordRequirements] =
+    useState(false);
   const navigate = useNavigate();
 
   const togglePasswordVisibility = () => {
@@ -80,7 +81,7 @@ export const Register = () => {
       } else {
         setError(data.message || "Registration failed. Please try again.");
       }
-    } catch (err) {
+    } catch {
       setError("Network error. Please try again later.");
     } finally {
       setLoading(false);

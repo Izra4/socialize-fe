@@ -55,7 +55,7 @@ export const Login = () => {
         setError(data.message || "Login failed. Please try again.");
       }
     } catch (err) {
-      setError("error: ",err);
+      setError("error: ", err);
     } finally {
       setLoading(false);
     }

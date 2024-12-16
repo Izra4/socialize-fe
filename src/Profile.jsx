@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Header from "./component/header.jsx";
 import Navbar from "./component/navbar.jsx";
 import vec from "./assets/vec-prof.png";
@@ -20,14 +20,14 @@ export const Profile = () => {
   const [fileName, setFileName] = useState("");
 
   // Fetch user data
-  const fetchUserData = async () => {
+  const fetchUserData = useCallback(async () => {
     try {
       setLoading(true);
       const response = await fetch(`${API_BASE_URL}/auth/current-user`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${Cookies.get("jwt-token")}`,
+          Authorization: `Bearer ${Cookies.get("jwt-token")}`,
         },
       });
 
@@ -44,15 +44,15 @@ export const Profile = () => {
         setError("Failed to fetch user data");
       }
     } catch (err) {
-      setError("Network error. Please try again later. error: ",err);
+      setError("Network error. Please try again later. error: ", err);
     } finally {
       setLoading(false);
     }
-  };
+  }, [navigate]);
 
   useEffect(() => {
     fetchUserData();
-  }, [navigate]);
+  }, [fetchUserData]);
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
@@ -109,7 +109,7 @@ export const Profile = () => {
         setError("Failed to update profile photo.");
       }
     } catch (err) {
-      setError("An error occurred while uploading the file. err: ",err);
+      setError("An error occurred while uploading the file. err: ", err);
     }
   };
 
@@ -125,106 +125,112 @@ export const Profile = () => {
 
   if (loading) {
     return (
-        <div className="flex justify-center items-center min-h-screen">
-          Loading...
-        </div>
+      <div className="flex justify-center items-center min-h-screen">
+        Loading...
+      </div>
     );
   }
 
   return (
-      <div className="w-full flex flex-col min-h-screen font-montserrat">
-        <Header />
-        <div className="flex flex-row">
-          <Navbar />
-          <div className="w-full mt-20 pl-10 pt-10 ml-64">
-            <img src={vec} alt="vector" className="absolute bottom-0 right-0" />
+    <div className="w-full flex flex-col min-h-screen font-montserrat">
+      <Header />
+      <div className="flex flex-row">
+        <Navbar />
+        <div className="w-full mt-20 pl-10 pt-10 ml-64">
+          <img src={vec} alt="vector" className="absolute bottom-0 right-0" />
 
-            <div className="w-full h-[550px] relative">
-              <div className="bg-gray-100 w-2/3 h-3/4 rounded-xl pl-3 pt-3">
-                <p className="font-semibold text-3xl">Settings</p>
-                <div className="w-full h-3/4 mt-2 flex flex-row">
-                  {/* Profile Picture */}
-                  <div className="flex flex-col items-center">
-                    <div className="w-44 h-44 p-[2px] rounded-full bg-gradient-to-b from-primary_blue to-secondary_blue">
-                      <div className="w-full h-full rounded-full overflow-hidden">
-                        <img
-                            src={userData.photo && userData.photo !== "" ? userData.photo : pict}
-                            alt="Profile"
-                            className="w-full h-full object-cover"
-                        />
-                      </div>
+          <div className="w-full h-[550px] relative">
+            <div className="bg-gray-100 w-2/3 h-3/4 rounded-xl pl-3 pt-3">
+              <p className="font-semibold text-3xl">Settings</p>
+              <div className="w-full h-3/4 mt-2 flex flex-row">
+                {/* Profile Picture */}
+                <div className="flex flex-col items-center">
+                  <div className="w-44 h-44 p-[2px] rounded-full bg-gradient-to-b from-primary_blue to-secondary_blue">
+                    <div className="w-full h-full rounded-full overflow-hidden">
+                      <img
+                        src={
+                          userData.photo && userData.photo !== ""
+                            ? userData.photo
+                            : pict
+                        }
+                        alt="Profile"
+                        className="w-full h-full object-cover"
+                      />
                     </div>
-                    {/* Display selected file name */}
-                    {fileName && (
-                        <p className="mt-2 text-sm font-semibold text-gray-600">{fileName}</p>
-                    )}
-                    {/* Hidden file input */}
-                    <input
-                        id="fileInput"
-                        type="file"
-                        className="hidden"
-                        onChange={handleFileChange}
-                    />
-                    {/* Edit picture button */}
-                    <button
-                        className="bg-primary_blue text-white py-2 px-6 rounded-3xl font-semibold mt-2 text-sm z-10"
-                        onClick={handleEditPictureClick}
-                    >
-                      Edit Picture
-                    </button>
-                    {/* Save and Cancel buttons */}
-                    {file && (
-                        <div className="flex mt-2 space-x-2">
-                          <button
-                              className="bg-green-500 text-white py-2 px-6 rounded-3xl font-semibold text-sm"
-                              onClick={handleUpload}
-                          >
-                            Save
-                          </button>
-                          <button
-                              className="bg-red-500 text-white py-2 px-6 rounded-3xl font-semibold text-sm"
-                              onClick={handleCancel}
-                          >
-                            Cancel
-                          </button>
-                        </div>
-                    )}
                   </div>
-
-                  {/* Name and Email */}
-                  <div className="flex flex-col ml-7 mt-3 relative">
-                    <div className="flex flex-col max-w-sm h-fit p-4">
-                      <p className="text-primary_blue font-semibold">Name</p>
-                      <p>{userData.name}</p>
-                      <p className="text-primary_blue font-semibold mt-3">
-                        Email
-                      </p>
-                      <p>{userData.email}</p>
-                    </div>
-                    {error && (
-                        <div className="text-red-500 text-sm mt-2">{error}</div>
-                    )}
-                    <div className="self-end text-white font-semibold text-sm mt-3 space-x-2">
+                  {/* Display selected file name */}
+                  {fileName && (
+                    <p className="mt-2 text-sm font-semibold text-gray-600">
+                      {fileName}
+                    </p>
+                  )}
+                  {/* Hidden file input */}
+                  <input
+                    id="fileInput"
+                    type="file"
+                    className="hidden"
+                    onChange={handleFileChange}
+                  />
+                  {/* Edit picture button */}
+                  <button
+                    className="bg-primary_blue text-white py-2 px-6 rounded-3xl font-semibold mt-2 text-sm z-10"
+                    onClick={handleEditPictureClick}
+                  >
+                    Edit Picture
+                  </button>
+                  {/* Save and Cancel buttons */}
+                  {file && (
+                    <div className="flex mt-2 space-x-2">
                       <button
-                          className="bg-primary_blue py-2 px-4 rounded-3xl"
-                          onClick={() => navigate("/profile/update")}
+                        className="bg-green-500 text-white py-2 px-6 rounded-3xl font-semibold text-sm"
+                        onClick={handleUpload}
                       >
-                        Edit Profile
+                        Save
+                      </button>
+                      <button
+                        className="bg-red-500 text-white py-2 px-6 rounded-3xl font-semibold text-sm"
+                        onClick={handleCancel}
+                      >
+                        Cancel
                       </button>
                     </div>
+                  )}
+                </div>
+
+                {/* Name and Email */}
+                <div className="flex flex-col ml-7 mt-3 relative">
+                  <div className="flex flex-col max-w-sm h-fit p-4">
+                    <p className="text-primary_blue font-semibold">Name</p>
+                    <p>{userData.name}</p>
+                    <p className="text-primary_blue font-semibold mt-3">
+                      Email
+                    </p>
+                    <p>{userData.email}</p>
+                  </div>
+                  {error && (
+                    <div className="text-red-500 text-sm mt-2">{error}</div>
+                  )}
+                  <div className="self-end text-white font-semibold text-sm mt-3 space-x-2">
+                    <button
+                      className="bg-primary_blue py-2 px-4 rounded-3xl"
+                      onClick={() => navigate("/profile/update")}
+                    >
+                      Edit Profile
+                    </button>
                   </div>
                 </div>
               </div>
-              <button
-                  className="bg-red-500 text-white py-2 px-4 rounded-3xl font-semibold absolute bottom-0 right-0 mr-28 mb-4"
-                  onClick={handleLogout}
-              >
-                Log out
-              </button>
             </div>
+            <button
+              className="bg-red-500 text-white py-2 px-4 rounded-3xl font-semibold absolute bottom-0 right-0 mr-28 mb-4"
+              onClick={handleLogout}
+            >
+              Log out
+            </button>
           </div>
         </div>
       </div>
+    </div>
   );
 };
 
