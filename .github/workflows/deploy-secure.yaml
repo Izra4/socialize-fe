@@ -1,0 +1,60 @@
+name: 🌟 SAST for JavaScript 🚀
+
+on:
+  push:
+    branches:
+      - secure
+  pull_request:
+
+jobs:
+  sast-socialize-fe-secure:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 🛠️ Step 1: Checkout code
+      - name: 🛠️ Checkout code
+        uses: actions/checkout@v3
+
+      # 🌐 Step 2: Set up Node.js environment
+      - name: 🌐 Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      # 📦 Step 3: Install dependencies
+      - name: 📦 Install dependencies
+        run: npm install
+
+      # 🔍 Step 4: Run ESLint for static code analysis
+      - name: 🔍 Run ESLint
+        run: npx eslint "src/**/*.{js,jsx}"
+
+      # 🛡️ Step 5: Run Semgrep for security scanning
+      - name: 🛡️ Run Semgrep
+        uses: returntocorp/semgrep-action@v1
+        with:
+          config: p/security-audit
+
+      # 📤 Step 6: Copy files to remote server
+      - name: 📤 Copy files to remote server
+        uses: appleboy/scp-action@v0.1.5
+        with:
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          port: ${{ secrets.REMOTE_PORT }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: "."
+          target: "./devsecops/fe/socialize-fe-secure"
+
+      # 🐳 Step 7: SSH into the server and run Docker commands
+      - name: 🐳 Run Docker Compose commands on remote server
+        uses: appleboy/ssh-action@v0.1.5
+        with:
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          port: ${{ secrets.REMOTE_PORT }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd devsecops/fe/socialize-fe-secure
+            docker-compose down
+            docker-compose up --detach --build
