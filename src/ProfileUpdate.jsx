@@ -33,7 +33,7 @@ export const ProfileUpdate = () => {
             name: data.obj.name,
             email: data.obj.email,
           });
-          setNewName(data.obj.name); // Set default value for form fields
+          setNewName(data.obj.name);
           setNewEmail(data.obj.email);
         } else {
           setError("Failed to fetch user data");

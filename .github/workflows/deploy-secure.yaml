@@ -7,7 +7,7 @@ on:
   pull_request:
 
 jobs:
-  sast:
+  sast-socialize-fe-secure:
     runs-on: ubuntu-latest
 
     steps:
@@ -41,8 +41,8 @@ jobs:
         with:
           host: ${{ secrets.REMOTE_HOST }}
           username: ${{ secrets.REMOTE_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          passphrase: ${{ secrets.PASSPHRASE }}
+          password: ${{ secrets.REMOTE_PASSWORD }}
+          port: ${{ secrets.REMOTE_PORT }}
           source: "./"
           target: "./devsecops/fe/socialize-fe-secure"
 
@@ -52,8 +52,8 @@ jobs:
         with:
           host: ${{ secrets.REMOTE_HOST }}
           username: ${{ secrets.REMOTE_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          passphrase: ${{ secrets.PASSPHRASE }}
+          password: ${{ secrets.REMOTE_PASSWORD }}
+          port: ${{ secrets.REMOTE_PORT }}
           script: |
             cd devsecops/fe/socialize-fe-secure
             docker-compose down
