@@ -1,0 +1,36 @@
+name: SAST for JavaScript
+
+on:
+  push:
+    branches:
+      - vulnerable
+  pull_request:
+
+jobs:
+  sast:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Node.js environment
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      # Step 3: Install dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # Step 4: Run ESLint for static code analysis
+      - name: Run ESLint
+        run: npx eslint . --ext .js,.jsx
+
+      # Step 5: Run Semgrep for security scanning
+      - name: Run Semgrep
+        uses: returntocorp/semgrep-action@v1
+        with:
+          config: p/security-audit
