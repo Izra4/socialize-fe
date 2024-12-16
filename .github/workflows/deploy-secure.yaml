@@ -45,7 +45,7 @@ jobs:
           port: ${{ secrets.REMOTE_PORT }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           passphrase: ${{ secrets.PASSPHRASE }}
-          source: "./"
+          source: "."
           target: "./devsecops/fe/socialize-fe-secure"
 
       # 🐳 Step 7: SSH into the server and run Docker commands

@@ -7,7 +7,7 @@ on:
   pull_request:
 
 jobs:
-  sast-socialize-fe-secure:
+  sast-socialize-fe-vulnerable:
     runs-on: ubuntu-latest
 
     steps:
