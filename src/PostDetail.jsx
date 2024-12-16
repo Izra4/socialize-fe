@@ -22,14 +22,13 @@ const PostDetail = () => {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${Cookies.get("jwt-token")}`,
+            Authorization: `Bearer ${Cookies.get("jwt-token")}`,
           },
         });
 
         if (response.ok) {
           const data = await response.json();
           if (data.status === 200) {
-            // Ensure post.comment is always an array
             setPost({
               ...data.obj,
               comment: data.obj.comment || [],
@@ -62,9 +61,9 @@ const PostDetail = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${Cookies.get("jwt-token")}`,
+          Authorization: `Bearer ${Cookies.get("jwt-token")}`,
         },
-        body: JSON.stringify({ comment }), 
+        body: JSON.stringify({ comment }),
       });
 
       if (response.ok) {
@@ -115,10 +114,16 @@ const PostDetail = () => {
               value={comment}
             />
             <div className="flex justify-end my-2 flex-row space-x-2">
-              <button onClick={handleCancel} className="bg-red-500 text-white py-1 px-3 rounded-full">
+              <button
+                onClick={handleCancel}
+                className="bg-red-500 text-white py-1 px-3 rounded-full"
+              >
                 Cancel
               </button>
-              <button onClick={handlePostComment} className="bg-blue-500 text-white py-1 px-3 rounded-full">
+              <button
+                onClick={handlePostComment}
+                className="bg-blue-500 text-white py-1 px-3 rounded-full"
+              >
                 Comment
               </button>
             </div>
