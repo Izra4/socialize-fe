@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import { useState } from "react";
+import DOMPurify from "dompurify";
 import { API_BASE_URL } from "../api/api.jsx";
 import Cookies from "js-cookie";
 
@@ -65,7 +66,7 @@ const Post = ({
 
       <p
         className="text-gray-800 mb-4"
-        dangerouslySetInnerHTML={{ __html: text }}
+        dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(text) }}
       ></p>
 
       {image && (
